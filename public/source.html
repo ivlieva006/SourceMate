@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SourceMate — карточка источника</title>
+    <meta name="description" content="Карточка источника SourceMate.">
+    <link rel="stylesheet" href="./cabinet.css">
+  </head>
+  <body>
+    <main class="cabinet-page">
+      <div class="cabinet-bg bg-left"></div>
+      <div class="cabinet-bg bg-right"></div>
+      <div class="cabinet-bg bg-bottom"></div>
+
+      <div class="cabinet-shell">
+        <header class="cabinet-nav" aria-label="Навигация личного кабинета">
+          <a class="cabinet-brand" href="./index.html" aria-label="SourceMate">
+            <span class="brand-mark"></span>
+            <strong>SourceMate</strong>
+          </a>
+
+          <nav class="cabinet-menu" aria-label="Разделы">
+            <a href="./cabinet.html#overview">Обзор</a>
+            <a href="./cabinet.html#checks">Проверки</a>
+            <a href="./cabinet.html#sources">Источники</a>
+            <a href="./cabinet.html#plan">Подписка</a>
+          </nav>
+
+          <button class="cabinet-support" type="button">Поддержка</button>
+        </header>
+
+        <section class="report-detail" data-source-detail>
+          <section class="empty-history report-loading">
+            <h3>Загружаем источник</h3>
+            <p>SourceMate подготавливает карточку публикации.</p>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <script src="./source.js"></script>
+  </body>
+</html>

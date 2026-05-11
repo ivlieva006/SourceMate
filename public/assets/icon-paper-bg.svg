@@ -1,0 +1,19 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 78 85.7354" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Bg">
+<path id="Union" d="M57.8633 4.83203C68.2762 4.83229 76.7666 13.3677 76.7666 23.8848V67.5732C76.7665 77.6049 68.7165 85.7352 58.7842 85.7354H26.9043C16.4912 85.7354 8 77.1999 8 66.6826V22.9941C8.0002 12.9625 16.0501 4.83215 25.9824 4.83203H57.8633Z" fill="url(#paint0_linear_0_116)"/>
+<g id="Rectangle 1034" opacity="0.5" filter="url(#filter0_f_0_116)">
+<rect x="21" y="63" width="42" height="36" rx="5" transform="rotate(-90 21 63)" fill="var(--fill-0, #A500FF)" fill-opacity="0.5"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_116" x="0" y="9.53674e-07" width="78" height="84" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="10.5" result="effect1_foregroundBlur_0_116"/>
+</filter>
+<linearGradient id="paint0_linear_0_116" x1="57.3577" y1="4.83203" x2="57.3577" y2="85.7355" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E3AFFF"/>
+<stop offset="1" stop-color="#A500FF"/>
+</linearGradient>
+</defs>
+</svg>

@@ -1,6 +1,6 @@
 // src/llm.js
 const fetch = (...args) => import('node-fetch').then(({default: f}) => f(...args));
-const { LLM_BASE_URL, LLM_MODEL } = require('../config/config.js');
+const { LLM_BASE_URL, LLM_MODEL, LLM_ENABLED } = require('../config/config.js');
 
 async function llmChat(messages) {
   const res = await fetch(`${LLM_BASE_URL}/chat/completions`, {
@@ -21,6 +21,7 @@ function safeJsonPick(s) {
 }
 
 async function llmExpandQuery(q, profile = null) {
+  if (!LLM_ENABLED) return [];
   const sys = `Return STRICT JSON: {"queries":[string,...]} (4–8 items).
 Consider synonyms, near-discipline phrases, RU/EN as needed.
 Avoid off-topic meanings from profile.disambiguation.reject_meanings.`;
@@ -34,6 +35,7 @@ Avoid off-topic meanings from profile.disambiguation.reject_meanings.`;
 }
 
 async function llmRelevance(query, item, profile = null) {
+  if (!LLM_ENABLED) return null;
   const sys = `Return ONLY JSON: {"relevance":0-100,"verdict":"include|exclude","reason":"short"}.
 Judge conceptual fit (not only word overlap). If profile provided, prefer must_have concepts and penalize reject meanings/negative domains.`;
   const msgs = [{ role:'system', content: sys }];
@@ -59,4 +61,23 @@ Abstract: ${item.description||''}`
   };
 }
 
-module.exports = { llmChat, llmExpandQuery, llmRelevance, safeJsonPick };
+async function llmMatchAdvice(fragment, source) {
+  if (!LLM_ENABLED) return '';
+  const sys = `Return ONLY JSON: {"advice":"short Russian recommendation"}.
+Explain how to rewrite or cite the fragment. Do not invent bibliographic facts.`;
+  const c = await llmChat([
+    { role: 'system', content: sys },
+    {
+      role: 'user',
+      content:
+`Fragment: ${fragment}
+Source title: ${source.title || ''}
+Source: ${source.source || ''}
+URL: ${source.url || ''}`
+    }
+  ]);
+  const j = safeJsonPick(c);
+  return String(j?.advice || '').trim();
+}
+
+module.exports = { llmChat, llmExpandQuery, llmRelevance, llmMatchAdvice, safeJsonPick };

@@ -19,6 +19,12 @@ async function searchCrossref(q){
       description: it.abstract ? he.decode(String(it.abstract).replace(/<\/?jats:[^>]+>/g,'')) : '',
       year: it['issued']?.['date-parts']?.[0]?.[0] || it['created']?.['date-parts']?.[0]?.[0],
       doi: it.DOI,
+      citations: it['is-referenced-by-count'] || 0,
+      authors: Array.isArray(it.author)
+        ? it.author.map(a => [a.given, a.family].filter(Boolean).join(' ')).filter(Boolean).slice(0, 8)
+        : [],
+      venue: container || '',
+      publisher: publisher || '',
       type: it.type || ''
     };
   }).filter(x=>x.title&&x.url);

@@ -1,7 +1,7 @@
 // === rusneb.js ===
 // Поиск по Национальной электронной библиотеке (https://rusneb.ru)
 
-export async function searchRusneb(query, limit = 10) {
+async function searchRusneb(query, limit = 10) {
   const url = `https://rusneb.ru/api/catalog/?q=${encodeURIComponent(query)}&limit=${limit}`;
   const res = await fetch(url);
   if (!res.ok) return [];
@@ -19,3 +19,5 @@ export async function searchRusneb(query, limit = 10) {
     doi: undefined // НЭБ не использует DOI
   }));
 }
+
+module.exports = { searchRusneb };

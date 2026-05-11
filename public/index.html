@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SourceMate</title>
+    <meta name="description" content="SourceMate помогает искать научные источники по теме.">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header" aria-label="Главная навигация">
+        <a class="brand" href="#top" aria-label="SourceMate">
+          <span class="brand-mark"></span>
+          <img src="./assets/logo.svg" alt="SourceMate">
+        </a>
+        <nav class="nav-links">
+          <a href="#results">Наш результат</a>
+          <a href="#roadmap">Что будет дальше</a>
+          <a class="nav-cta" href="./auth.html#login">Попробовать</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-bg"></div>
+          <h1 id="hero-title">Добро пожаловать<br>в SourceMate</h1>
+        </section>
+
+        <section class="showcase" id="results" aria-labelledby="results-title">
+          <h2 id="results-title">Смотри что мы уже сделали</h2>
+
+          <div class="showcase-grid">
+            <article class="card card-phone" aria-label="Мобильный запуск SourceMate">
+              <div class="phone-visual">
+                <img class="phone-shadow" src="./assets/phone-frame-shadow.png" alt="">
+                <img class="phone-frame" src="./assets/phone-frame.png" alt="">
+                <img class="phone-screen" src="./assets/phone-screen.png" alt="Экран Telegram-бота SourceMate">
+              </div>
+            </article>
+
+            <article class="card launch-card">
+              <div class="chips">
+                <span class="chip chip-active"><span></span>Запуск</span>
+                <span class="chip">Telegram</span>
+                <span class="chip">Разработка</span>
+                <span class="chip">Тестирование</span>
+              </div>
+              <h3>Уже<br>запустились</h3>
+            </article>
+
+            <article class="card optimize-card">
+              <h3>Сделали лучшую оптимизацию</h3>
+              <div class="macbook-visual">
+                <img class="macbook" src="./assets/macbook.png" alt="">
+                <img class="macbook-screen" src="./assets/macbook-screen.png" alt="Код проекта SourceMate">
+              </div>
+            </article>
+
+            <article class="card feedback-card">
+              <div class="chips">
+                <span class="chip chip-active"><span></span>Тестирование</span>
+                <span class="chip">Разработка</span>
+                <span class="chip">Опрос</span>
+              </div>
+              <h3>Получили фитбек от пользователей</h3>
+              <div class="messages" aria-label="Отзывы пользователей">
+                <p class="message m1">Ура, я так долго ждал релиза этого бота. Спасибо разработчикам за данную возможность, теперь не придется искать их вручную.</p>
+                <p class="message m2">Он не генерирует выдуманные источники, а присылает уже существующие.</p>
+                <p class="message m3">Ребят давайте поднимайте русский AI 💪</p>
+                <p class="message m4">Один из стоящих проектов Московского политеха. Оживите научный интерес студентов.</p>
+              </div>
+            </article>
+          </div>
+
+          <a class="main-cta" id="try" href="./auth.html#login">Попробовать</a>
+        </section>
+
+        <section class="benefits" aria-labelledby="benefits-title">
+          <div class="section-glow"></div>
+          <h2 id="benefits-title">Мы помогаем вам найти<br>самое важное</h2>
+
+          <div class="benefit-grid">
+            <article class="benefit-card">
+              <div class="glass-icon">
+                <img class="icon-bg" src="./assets/icon-info-bg.svg" alt="">
+                <img class="icon-main" src="./assets/icon-info.svg" alt="">
+              </div>
+              <h3>Информация</h3>
+              <p>Наша команда разработала свой ИИ и не использует сторонние сервисы. Информацию которую вы получаете это обученная нейросеть</p>
+            </article>
+
+            <article class="benefit-card">
+              <div class="glass-icon">
+                <img class="icon-bg" src="./assets/icon-paper-bg.svg" alt="">
+                <img class="icon-main" src="./assets/icon-paper.svg" alt="">
+              </div>
+              <h3>Наше влияние</h3>
+              <p>Мы никак не влияем на ваш процесс обучения. Наша задача найти вам решение которое поможет быстрее дойти к своей цели</p>
+            </article>
+
+            <article class="benefit-card">
+              <div class="glass-icon">
+                <img class="icon-bg" src="./assets/icon-shield-bg.svg" alt="">
+                <img class="icon-main" src="./assets/icon-shield.svg" alt="">
+              </div>
+              <h3>Мы не используем ваши данные</h3>
+              <p>Наша команда не владеет вашей личной информацией, а также не использует ваши данные и не хранит их</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
+          <h2 id="roadmap-title">Новые функции в ближайшее время</h2>
+
+          <div class="roadmap-row">
+            <div class="roadmap-visual visual-left">
+              <div class="glass-icon profile-icon">
+                <img class="icon-bg" src="./assets/icon-profile-bg.svg" alt="">
+                <img class="icon-main" src="./assets/icon-profile.svg" alt="">
+              </div>
+            </div>
+            <article class="roadmap-copy">
+              <h3>Что будет дальше</h3>
+              <p>Мы бы хотели создать полноценный личный кабинет. Вы бы смогли пользоваться нашим ИИ не только в телеграмме</p>
+            </article>
+          </div>
+
+          <div class="roadmap-row roadmap-row-reverse">
+            <article class="roadmap-copy">
+              <h3>Больше функций</h3>
+              <p>Новые функции которые бы могли вам помочь в научной деятельности. Уже сейчас ведется активная разработка, в скором времени они появятся у всех пользователей</p>
+            </article>
+            <div class="roadmap-visual visual-right">
+              <div class="glass-icon search-icon">
+                <img class="icon-bg" src="./assets/icon-search-bg.svg" alt="">
+                <img class="icon-main" src="./assets/icon-search.svg" alt="">
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" id="contact">
+        <div class="footer-bg"></div>
+        <a class="brand footer-brand" href="#top" aria-label="SourceMate">
+          <span class="brand-mark"></span>
+          <img src="./assets/logo.svg" alt="SourceMate">
+        </a>
+        <div class="footer-nav">
+          <h2>Навигация</h2>
+          <a href="#results">Наш результат</a>
+          <a href="#roadmap">Что будет дальше</a>
+          <a href="./auth.html#login">Попробовать</a>
+        </div>
+        <address class="contacts">
+          <h2>Контакты</h2>
+          <p><span>Телефон</span><a href="tel:+79017148171">+7 (901) 714 81-71</a></p>
+          <p><span>Почта</span><a href="mailto:sourcemate.help@gmail.com">sourcemate.help@gmail.com</a></p>
+        </address>
+      </footer>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
