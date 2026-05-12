@@ -18,6 +18,20 @@ SourceMate - учебный веб-сервис и Telegram-бот для пои
 - Детальная страница отчета с проблемными фрагментами и рекомендациями.
 - Карточка источника с DOI, авторами, ссылкой, ГОСТ- и BibTeX-оформлением.
 
+## Скриншоты
+
+### Веб-интерфейс
+
+<img src="screenshots/main.png" alt="Главная страница SourceMate" width="800">
+
+### Telegram-бот
+
+<img src="screenshots/tg_bot.png" alt="Telegram-бот SourceMate" width="300">
+
+### AI-помощник
+
+<img src="screenshots/ai_support.png" alt="AI-помощник SourceMate" width="300">
+
 ## Технологии
 
 - Node.js
