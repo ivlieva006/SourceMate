@@ -1,5 +1,5 @@
 (function () {
-  const supportButtons = document.querySelectorAll(".cabinet-support");
+  const supportButtons = document.querySelectorAll(".cabinet-support:not([data-burger-toggle])");
   if (!supportButtons.length) return;
 
   const API_ORIGIN_SUPPORT = window.location.port === "5500" ? "http://localhost:3000" : "";
@@ -56,6 +56,12 @@
   const sendButton = widget.querySelector(".support-send");
   const quickButtons = widget.querySelectorAll("[data-support-prompt]");
 
+  function syncModalOpenState() {
+    const hasVisibleOverlay = [...document.querySelectorAll(".widget-overlay, .settings-overlay, .support-widget")]
+      .some((item) => !item.hidden);
+    if (!hasVisibleOverlay) document.body.classList.remove("modal-open");
+  }
+
   function bringSupportToFront() {
     document.querySelectorAll(".widget-overlay, .settings-overlay, .support-widget").forEach((item) => {
       item.classList.toggle("is-top-modal", item === widget);
@@ -79,6 +85,7 @@
   function openSupport() {
     widget.hidden = false;
     bringSupportToFront();
+    document.body.classList.add("support-open", "modal-open");
     supportButtons.forEach((button) => button.setAttribute("aria-expanded", "true"));
     if (!history.length) {
       const greeting = "Здравствуйте! Чем помочь сегодня? Могу объяснить отчёт, найти источник или помочь загрузить работу.";
@@ -91,6 +98,8 @@
   function closeSupport() {
     widget.hidden = true;
     widget.classList.remove("is-top-modal");
+    document.body.classList.remove("support-open");
+    syncModalOpenState();
     supportButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
   }
 
@@ -169,5 +178,13 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !widget.hidden) closeSupport();
+  });
+
+  window.addEventListener("pagehide", () => {
+    closeSupport();
+  });
+
+  window.addEventListener("pageshow", () => {
+    syncModalOpenState();
   });
 }());

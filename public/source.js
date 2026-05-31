@@ -236,6 +236,15 @@ function renderSource(payload) {
       <article><strong>${doi ? "DOI" : "URL"}</strong><span>Идентификатор</span><small class="warn">${esc(identifierLabel)}</small></article>
     </section>
 
+    <section class="detail-actions-card" aria-label="Быстрые действия">
+      <h2>Быстрые действия</h2>
+      <div>
+        <a href="./cabinet.html?settings=1">Профиль</a>
+        <button type="button" class="detail-action-support">Поддержка</button>
+        <a href="./subscription.html">Тариф</a>
+      </div>
+    </section>
+
     <section class="detail-main-row">
       <article class="matches-panel source-passport">
         <div class="detail-heading">
@@ -297,6 +306,7 @@ function renderSource(payload) {
             </article>
           </div>
           <button class="cabinet-btn primary wide" type="button" data-copy-citation="${esc(`${gostCitation(source)}\n\n${bibtexCitation(source)}`)}">Скопировать все</button>
+          <button class="cabinet-btn primary wide mobile-source-back" type="button" data-source-back>Вернуться к проверкам</button>
         </article>
       </aside>
     </section>
@@ -371,6 +381,11 @@ document.addEventListener("click", async (event) => {
   if (copyButton) {
     await navigator.clipboard?.writeText(copyButton.dataset.copyCitation || "");
     copyButton.textContent = "Скопировано";
+    return;
+  }
+
+  if (event.target.closest(".detail-action-support")) {
+    document.querySelector(".cabinet-support")?.click();
     return;
   }
 

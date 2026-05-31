@@ -6,6 +6,11 @@ const uploadTitle = document.querySelector("[data-upload-title]");
 const uploadMeta = document.querySelector("[data-upload-meta]");
 const welcome = document.querySelector("[data-welcome]");
 const closeWelcome = document.querySelector("[data-close-welcome]");
+const burgerToggle = document.querySelector("[data-burger-toggle]");
+const burgerDrawer = document.querySelector("[data-burger-drawer]");
+const burgerName = document.querySelector("[data-burger-name]");
+const burgerPlan = document.querySelector("[data-burger-plan]");
+const burgerAvatar = document.querySelector("[data-burger-avatar]");
 const topicInput = document.querySelector("#check-topic");
 const widget = document.querySelector("[data-upload-widget]");
 const widgetTopicInput = document.querySelector("#widget-topic");
@@ -24,6 +29,7 @@ const settingsNameInput = document.querySelector("[data-settings-name]");
 const settingsRole = document.querySelector("[data-settings-role]");
 const settingsEmail = document.querySelector("[data-settings-email]");
 const settingsPasswordUpdated = document.querySelector("[data-settings-password-updated]");
+const settingsPasswordUpdatedNodes = document.querySelectorAll("[data-settings-password-updated]");
 const profileDisplay = document.querySelector("[data-profile-display]");
 const profileInlineEdit = document.querySelector("[data-profile-inline-edit]");
 const profileNameInput = document.querySelector("[data-profile-name-input]");
@@ -40,6 +46,8 @@ const accountPasswordNewInput = document.querySelector("[data-account-password-n
 const accountPasswordStatus = document.querySelector("[data-account-password-status]");
 const securityPasswordStatus = document.querySelector("[data-security-password-status]");
 const accountAvatars = document.querySelectorAll("[data-account-avatar]");
+const accountPlanChips = document.querySelectorAll("[data-account-plan-chip]");
+const accountChecksChips = document.querySelectorAll("[data-account-checks-chip]");
 const cancelDeleteButton = document.querySelector("[data-cancel-delete]");
 const confirmDeleteButton = document.querySelector("[data-confirm-delete]");
 const sourcesPanel = document.querySelector("[data-sources-panel]");
@@ -375,6 +383,10 @@ function renderHistory(checks = currentChecks) {
         ${rows}
       </div>
     </div>
+    <div class="mobile-history-actions">
+      <button class="upload-button mobile-history-upload" type="button" data-open-upload-widget>Загрузить работу</button>
+      <button class="upload-button mobile-history-export" type="button" data-open-export-widget>Экспортировать отчет</button>
+    </div>
   `;
 }
 
@@ -402,24 +414,93 @@ function applyPendingState() {
 function updateProfileName() {
   const name = currentUser?.name || (currentUser?.email ? currentUser.email.split("@")[0] : "Имя Фамилия");
   const role = currentUser?.role || "Студент · Московский политех";
+  const email = currentUser?.email || "student@mail.ru";
+  const planName = currentUser?.subscription?.planName || "Free";
+  const checksCount = currentChecks.length;
+  const checksLabel = `${checksCount} ${formatCountWord(checksCount, ["проверка", "проверки", "проверок"])}`;
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0])
+    .join("")
+    .toUpperCase() || "SM";
   document.querySelector("[data-profile-name]").textContent = name;
+  if (burgerName) burgerName.textContent = name;
+  if (burgerPlan) burgerPlan.textContent = `${planName} · ${checksLabel}`;
+  if (burgerAvatar) burgerAvatar.textContent = initials;
   if (settingsNameInput) {
     if ("value" in settingsNameInput) settingsNameInput.value = name;
     else settingsNameInput.textContent = name;
   }
   if (settingsRole) settingsRole.textContent = role;
-  if (settingsEmail) settingsEmail.textContent = currentUser?.email || "student@mail.ru";
-  if (settingsPasswordUpdated) settingsPasswordUpdated.textContent = formatPasswordUpdated(currentUser?.passwordUpdatedAt);
+  if (settingsEmail) settingsEmail.textContent = email;
+  document.querySelectorAll(".account-mobile-email").forEach((node) => {
+    node.textContent = email;
+  });
+  accountPlanChips.forEach((node) => { node.textContent = planName; });
+  accountChecksChips.forEach((node) => { node.textContent = checksLabel; });
+  settingsPasswordUpdatedNodes.forEach((node) => {
+    node.textContent = formatPasswordUpdated(currentUser?.passwordUpdatedAt);
+  });
   accountAvatars.forEach((avatar) => {
+    avatar.dataset.initials = initials;
     if (currentUser?.avatarUrl) {
       avatar.style.backgroundImage = `url("${currentUser.avatarUrl}")`;
       avatar.classList.add("has-image");
+      if (avatar === burgerAvatar) avatar.textContent = "";
     } else {
       avatar.style.backgroundImage = "";
       avatar.classList.remove("has-image");
+      if (avatar === burgerAvatar) avatar.textContent = initials;
     }
   });
   applyAccountSettings();
+}
+
+function formatCountWord(count, forms) {
+  const abs = Math.abs(Number(count) || 0) % 100;
+  const last = abs % 10;
+  if (abs > 10 && abs < 20) return forms[2];
+  if (last > 1 && last < 5) return forms[1];
+  if (last === 1) return forms[0];
+  return forms[2];
+}
+
+function setBurgerOpen(open) {
+  if (!burgerDrawer || !burgerToggle) return;
+  if (open && window.matchMedia("(min-width: 681px)").matches) {
+    burgerDrawer.hidden = true;
+    burgerToggle.setAttribute("aria-expanded", "false");
+    releasePageScrollLocks();
+    return;
+  }
+  if (burgerDrawer.parentElement !== document.body) {
+    document.body.appendChild(burgerDrawer);
+  }
+  burgerDrawer.hidden = !open;
+  burgerToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  document.body.classList.toggle("burger-open", open);
+  document.documentElement.classList.toggle("burger-open", open);
+
+  if (open) {
+    document.body.dataset.burgerScrollY = String(window.scrollY || 0);
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${window.scrollY || 0}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    return;
+  }
+
+  const scrollY = Number(document.body.dataset.burgerScrollY || 0);
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.left = "";
+  document.body.style.right = "";
+  document.body.style.width = "";
+  delete document.body.dataset.burgerScrollY;
+  if (Number.isFinite(scrollY)) window.scrollTo(0, scrollY);
 }
 
 function formatPasswordUpdated(timestamp) {
@@ -448,6 +529,8 @@ function applyAccountSettings() {
 function applyWelcomeState() {
   if (readCabinetState().welcomeHidden) {
     welcome.classList.add("is-hidden");
+  } else {
+    welcome.classList.remove("is-hidden");
   }
 }
 
@@ -474,7 +557,7 @@ function renderReports(checks) {
   const activeProjects = reports.length;
 
   page.classList.add("is-used");
-  welcome.classList.add("is-hidden");
+  applyWelcomeState();
   finishInitialRender();
   sourcesPanel.hidden = false;
   updateProfileName();
@@ -712,15 +795,29 @@ function renderEmptyCabinet() {
   document.querySelector(".cabinet-main").hidden = false;
   page.classList.remove("is-used");
   sourcesPanel.hidden = true;
-  applyStat("originality", "0", "появится после проверок", "");
-  applyStat("sources", "0", "появятся после темы", "");
-  applyStat("checks", "0", "стартовая статистика", "");
-  applyStat("projects", "Нет", "добавьте тему", "warning");
+  applyStat("originality", "0", "после проверки", "");
+  applyStat("sources", "0", "после темы", "");
+  applyStat("checks", "0", "за месяц", "");
+  applyStat("projects", "Нет", "добавить тему", "warning");
   historyContent.innerHTML = `
-    <div class="empty-history">
-      <h3>Вы еще ничего не загружали</h3>
-      <p>Добавьте работу, чтобы SourceMate собрал отчет и источники.</p>
-      <button class="upload-button" type="button" data-open-upload-widget>Загрузить и проверить</button>
+    <div class="upload-zone">
+      <div class="upload-inner">
+        <span class="upload-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 19V5"></path>
+            <path d="m6.5 10.5 5.5-5.5 5.5 5.5"></path>
+          </svg>
+        </span>
+        <div class="upload-copy">
+          <h3>Загрузите первую работу</h3>
+          <p>DOCX / PDF / TXT до 25 МБ</p>
+        </div>
+        <span class="format-chip">DOCX / PDF / TXT</span>
+      </div>
+    </div>
+    <div class="mobile-history-actions">
+      <button class="upload-button mobile-history-upload" type="button" data-open-upload-widget>Загрузить работу</button>
+      <button class="upload-button mobile-history-export" type="button" data-open-export-widget>Экспортировать отчет</button>
     </div>
   `;
 }
@@ -791,6 +888,10 @@ async function loadCabinetState() {
     });
     const data = await response.json().catch(() => ({}));
     currentUser = data.user || null;
+    if (!currentUser) {
+      window.location.replace("./auth.html#login");
+      return;
+    }
     const cachedChecks = readCachedChecks(currentUser);
     if (!response.ok || data.ok === false) {
       renderReports(cachedChecks);
@@ -864,6 +965,11 @@ function openSettings() {
   settingsWidget.querySelector("[data-close-settings]").focus();
 }
 
+function openSettingsTab(tab) {
+  openSettings();
+  if (tab) setSettingsTab(tab);
+}
+
 function closeSettings() {
   settingsWidget.hidden = true;
   clearModalLayer(settingsWidget);
@@ -876,12 +982,17 @@ function closeSettings() {
 }
 
 function setSettingsTab(tab) {
+  let activeTab = null;
   document.querySelectorAll("[data-settings-tab]").forEach((item) => {
     item.classList.toggle("active", item.dataset.settingsTab === tab);
+    if (item.dataset.settingsTab === tab) activeTab = item;
   });
   document.querySelectorAll("[data-settings-panel]").forEach((panel) => {
     panel.classList.toggle("active", panel.dataset.settingsPanel === tab);
   });
+  if (activeTab && window.matchMedia("(max-width: 680px)").matches) {
+    activeTab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
 }
 
 function applyUserFromResponse(data) {
@@ -946,13 +1057,26 @@ function setPasswordEditing(editing) {
   }
 }
 
+function setSecurityPasswordEditing(editing) {
+  const card = document.querySelector(".security-password-card");
+  const currentInput = document.querySelector("[data-password-current]");
+  const newInput = document.querySelector("[data-password-new]");
+  const button = card?.querySelector("[data-account-action='security-password-edit']");
+  if (!card) return;
+  card.classList.toggle("is-mobile-editing", editing);
+  if (button) {
+    button.firstChild.textContent = editing ? "Отмена " : "Изменить ";
+  }
+  if (editing) {
+    if (currentInput) currentInput.value = "";
+    if (newInput) newInput.value = "";
+    setInlineStatus(securityPasswordStatus);
+    currentInput?.focus();
+  }
+}
+
 async function saveProfile(patch) {
-  const data = await postJson("/api/account/profile", {
-    name: currentUser?.name || settingsNameInput?.textContent || "",
-    role: currentUser?.role || settingsRole?.textContent || "",
-    email: currentUser?.email || settingsEmail?.textContent || "",
-    ...patch
-  });
+  const data = await postJson("/api/account/profile", patch);
   applyUserFromResponse(data);
   return data;
 }
@@ -995,6 +1119,7 @@ async function changePassword() {
   applyUserFromResponse(data);
   if (currentInput) currentInput.value = "";
   if (newInput) newInput.value = "";
+  setSecurityPasswordEditing(false);
   setInlineStatus(securityPasswordStatus, "Пароль обновлен");
 }
 
@@ -1089,6 +1214,12 @@ async function handleAccountAction(action) {
       return;
     }
 
+    if (action === "security-password-edit") {
+      const card = document.querySelector(".security-password-card");
+      setSecurityPasswordEditing(!card?.classList.contains("is-mobile-editing"));
+      return;
+    }
+
     if (action === "password-tab") {
       setPasswordEditing(true);
       return;
@@ -1163,6 +1294,24 @@ async function handleAccountAction(action) {
 }
 
 document.addEventListener("click", (event) => {
+  const burgerButton = event.target.closest("[data-burger-toggle]");
+  if (burgerButton) {
+    event.preventDefault();
+    if (window.matchMedia("(min-width: 681px)").matches) {
+      setBurgerOpen(false);
+      document.querySelector("[data-support-launcher]")?.click();
+      return;
+    }
+    setBurgerOpen(burgerDrawer?.hidden);
+    return;
+  }
+
+  if (burgerDrawer && !burgerDrawer.hidden && !event.target.closest("[data-burger-drawer]")) {
+    setBurgerOpen(false);
+  }
+});
+
+document.addEventListener("click", (event) => {
   const button = event.target.closest("[data-open-upload-widget]");
   if (!button) return;
   openWidget();
@@ -1171,7 +1320,16 @@ document.addEventListener("click", (event) => {
 document.addEventListener("click", (event) => {
   const button = event.target.closest("[data-open-settings]");
   if (!button) return;
-  openSettings();
+  event.preventDefault();
+  setBurgerOpen(false);
+  openSettingsTab(button.dataset.settingsTargetTab || "");
+});
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-burger-support]");
+  if (!button) return;
+  setBurgerOpen(false);
+  document.querySelector("[data-support-launcher]")?.click();
 });
 
 document.addEventListener("click", (event) => {
@@ -1220,6 +1378,14 @@ exportWidget.addEventListener("click", (event) => {
 });
 
 settingsWidget.addEventListener("click", (event) => {
+  const bannerDismiss = event.target.closest(".banner-dismiss");
+  if (bannerDismiss) {
+    event.preventDefault();
+    event.stopPropagation();
+    bannerDismiss.closest(".settings-banner")?.remove();
+    return;
+  }
+
   if (event.target === settingsWidget) closeSettings();
 });
 
@@ -1397,6 +1563,7 @@ widgetDropzone.addEventListener("drop", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && burgerDrawer && !burgerDrawer.hidden) setBurgerOpen(false);
   if (event.key === "Escape" && !widget.hidden) closeWidget();
   if (event.key === "Escape" && !settingsWidget.hidden) closeSettings();
   if (event.key === "Escape" && !exportWidget.hidden) closeExportWidget();
@@ -1408,6 +1575,15 @@ document.addEventListener("keydown", (event) => {
     }
   }
   if (event.key === "Escape" && !deleteWidget.hidden) closeDeleteWidget();
+});
+
+window.addEventListener("resize", () => {
+  if (!burgerDrawer || burgerDrawer.hidden) return;
+  if (window.matchMedia("(min-width: 681px)").matches) setBurgerOpen(false);
+});
+
+window.addEventListener("pagehide", () => {
+  if (burgerDrawer && !burgerDrawer.hidden) setBurgerOpen(false);
 });
 
 applyWelcomeState();

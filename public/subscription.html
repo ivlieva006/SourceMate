@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SourceMate — подписка</title>
     <meta name="description" content="Тарифы и подписка SourceMate.">
-    <link rel="stylesheet" href="./cabinet.css">
+    <link rel="stylesheet" href="./cabinet.css?v=32">
     <link rel="prefetch" href="./cabinet.html">
     <link rel="prefetch" href="./cabinet.js">
     <link rel="prefetch" href="./report.html">
@@ -16,9 +16,9 @@
   <body>
     <main class="subscription-page is-loading" data-subscription-page>
       <section class="subscription-offer" data-plan-banner>
-        <strong>Командный SourceMate:</strong>
-        <span>единый кабинет для преподавателей, кафедр, курсов и учебных групп</span>
-        <button type="button" data-plan-tab="team">Запросить доступ →</button>
+        <strong>SourceMate для учёбы</strong>
+        <span>полный академический отчёт, источники, цитаты и экспорт PDF в одном тарифе</span>
+        <button type="button" data-checkout-plan="student">Оформить Student →</button>
       </section>
 
       <div class="subscription-bg" aria-hidden="true"></div>
@@ -40,7 +40,7 @@
       <section class="subscription-shell" data-billing-mode="personal" data-period="year">
         <div class="subscription-heading">
           <h1 data-subscription-title>Личный план SourceMate</h1>
-          <p data-subscription-subtitle>Выберите тариф под дедлайн, семестр или большую исследовательскую работу</p>
+          <p data-subscription-subtitle>Выберите тариф под дедлайн, семестр или командную работу с академическими проверками</p>
         </div>
 
         <div class="billing-toggle" aria-label="Тип подписки">
@@ -83,8 +83,8 @@
             </div>
             <div class="team-metrics">
               <article><strong>5+</strong><span>минимум участников</span></article>
-              <article><strong>SSO/MFA</strong><span>приватность данных</span></article>
               <article><strong>∞</strong><span>общая история и отчёты</span></article>
+              <article><strong>SSO/MFA</strong><span>приватность данных</span></article>
               <article><strong>гибко</strong><span>лимиты по участникам</span></article>
             </div>
             <div class="team-important">
@@ -95,6 +95,7 @@
               <span>• Приватность</span>
               <span>• Единая оплата</span>
             </div>
+            <button class="team-hero-bottom" type="button" data-team-request>Запросить доступ</button>
           </article>
 
           <div class="team-feature-grid">
@@ -117,18 +118,13 @@
     <script>
       (() => {
         const closeButton = document.querySelector("[data-close-subscription]");
-        if (!closeButton) return;
-        document.body.append(closeButton);
-        closeButton.style.setProperty("position", "fixed", "important");
-        closeButton.style.setProperty("top", "126px");
-        closeButton.style.setProperty("right", "24px");
-        closeButton.style.setProperty("z-index", "100");
-        closeButton.style.setProperty("transform", "none");
+        if (closeButton) document.body.append(closeButton);
       })();
     </script>
 
-    <script src="./settings-modal.js"></script>
-    <script src="./subscription.js?v=close-fixed-2"></script>
-    <script src="./support.js"></script>
+    <script src="./settings-modal.js?v=2"></script>
+    <script src="./subscription.js?v=close-fixed-21"></script>
+    <script src="./burger-menu.js?v=8"></script>
+    <script src="./support.js?v=2"></script>
   </body>
 </html>

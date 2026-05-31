@@ -104,13 +104,19 @@ img {
 }
 
 .nav-cta,
-.main-cta {
+.main-cta,
+.hero-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--paper);
   background: var(--ink);
   box-shadow: 2px 6px 10px rgba(65, 65, 65, 0.25);
+}
+
+.menu-toggle,
+.hero-cta {
+  display: none;
 }
 
 .nav-cta {
@@ -786,7 +792,7 @@ img {
   }
 
   .message {
-    max-width: 210px;
+    /* max-width: 210px; */
     padding: 10px;
     border-radius: 12px 12px 12px 0;
     font-size: 7px;
@@ -911,38 +917,677 @@ img {
 }
 
 @media (max-width: 620px) {
+  .page-shell {
+    background:
+      radial-gradient(circle at -42% 4%, rgba(116, 0, 255, 0.72), transparent 250px),
+      radial-gradient(circle at 128% 12%, rgba(0, 105, 255, 0.62), transparent 300px),
+      radial-gradient(circle at 112% 58%, rgba(153, 0, 164, 0.3), transparent 260px),
+      #000;
+  }
+
+  .site-header {
+    top: 63px;
+    left: 24px;
+    right: 24px;
+    width: auto;
+    transform: none;
+    min-height: 56px;
+    padding: 10px 14px;
+    border-radius: 28px;
+  }
+
+  .brand {
+    width: auto;
+    height: auto;
+    flex: 0 1 auto;
+    gap: 8px;
+    padding: 0;
+  }
+
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+    flex-basis: 22px;
+  }
+
+  .brand img {
+    display: none;
+  }
+
+  .brand::after {
+    content: "SourceMate";
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .nav-links {
+    gap: 0;
+  }
+
   .nav-links a:not(.nav-cta) {
     display: none;
   }
 
+  .nav-cta {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    background: #ebebeb;
+    color: #2b2b2b;
+    font: 700 16px/1 Inter, Arial, sans-serif;
+    cursor: pointer;
+  }
+
+  .hero {
+    min-height: 795px;
+    display: block;
+    padding: 0 24px;
+  }
+
+  .hero-bg {
+    inset: -210px -390px auto;
+    height: 930px;
+    opacity: 0.88;
+  }
+
   .hero h1 {
-    font-size: 27px;
+    position: absolute;
+    top: 354px;
+    left: 50%;
+    width: calc(100% - 48px);
+    transform: translateX(-50%);
+    font-size: 31px;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .hero-cta {
+    position: absolute;
+    top: 470px;
+    left: 50%;
+    display: inline-flex;
+    min-height: 70px;
+    transform: translateX(-50%);
+    padding: 22px 31px;
+    border-radius: 40px;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .showcase,
+  .benefits,
+  .roadmap,
+  .footer {
+    width: calc(100% - 48px);
+  }
+
+  .showcase {
+    padding-top: 50px;
   }
 
   .showcase h2,
   .benefits h2,
   .roadmap h2 {
-    font-size: 18px;
+    font-size: 26px;
+    line-height: 1.2;
   }
 
   .showcase-grid {
-    grid-template-columns: 1fr 0.86fr;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 58px;
   }
 
-  .optimize-card,
+  .card {
+    width: 100%;
+    border-radius: 21px;
+  }
+
+  .card-phone {
+    height: 290px;
+  }
+
+  .phone-visual {
+    top: 20px;
+    width: 296px;
+  }
+
+  .launch-card {
+    height: 350px;
+    padding: 25px;
+    border-radius: 26px;
+  }
+
+  .launch-card .chips {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 18px 13px;
+  }
+
+  .chip {
+    min-height: 42px;
+    padding: 12px 19px;
+    border-width: 1.3px;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  .chip-active span {
+    width: 13px;
+    height: 13px;
+  }
+
+  .launch-card h3 {
+    left: 25px;
+    bottom: 27px;
+    font-size: 42px;
+    line-height: 1.08;
+  }
+
+  .optimize-card {
+    display: none;
+  }
+
   .feedback-card {
-    grid-column: 1 / -1;
+    min-height: 280px;
+    padding: 16px;
+    border: 1px solid #332e4d;
+    border-radius: 18px;
+    background: linear-gradient(76deg, #1a1c29 17%, #300f45 102%);
+  }
+
+  .feedback-card::before {
+    display: none;
+  }
+
+  .feedback-card .chips {
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .feedback-card .chip {
+    min-height: 26px;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 12px;
+    background: #33333d;
+    color: #ebebeb;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .feedback-card .chip-active span {
+    display: none;
+  }
+
+  .feedback-card h3 {
+    margin-top: 12px;
+    font-size: clamp(28px, 8.72vw, 34px);
+    line-height: 1.12;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .messages {
+    min-height: 118px;
+    margin-top: 12px;
+  }
+
+  .message {
+    display: none;
+    box-shadow: none;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .message.m1,
+  .message.m2 {
+    display: block;
+    left: 0;
+    right: auto;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 0;
+  }
+
+  .m1 {
+    top: 0;
+    width: min(100%, 280px);
+    min-height: 55px;
+    overflow: hidden;
+    background: #25252a;
+  }
+
+  .m1::before {
+    content: "Можно добавить экспорт отчёта\a в PDF?";
+    display: block;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: pre-line;
+  }
+
+  .m1 {
+    color: transparent;
+  }
+
+  .m1::before {
+    color: #ededed;
+  }
+
+  .m2 {
+    top: 67px;
+    width: min(100%, 240px);
+    min-height: 39px;
+    background: #213363;
+    color: transparent;
+  }
+
+  .m2::before {
+    content: "Да, уже в бета-версии";
+    color: #e5edff;
+    display: block;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .main-cta {
+    min-height: 52px;
+    margin-top: 54px;
+    padding: 14px 24px;
+    border-radius: 26px;
+    font-size: 20px;
+    box-shadow: none;
+  }
+
+  .benefits {
+    padding-top: 128px;
+  }
+
+  .section-glow {
+    display: none;
   }
 
   .benefit-grid {
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 54px;
   }
 
   .benefit-card {
-    padding: 18px 8px;
+    min-height: 370px;
+    padding: 36px 28px 30px;
+    border-radius: 38px;
+  }
+
+  .glass-icon {
+    width: 97px;
+    height: 83px;
+  }
+
+  .benefit-card h3 {
+    max-width: 290px;
+    margin-top: 42px;
+    font-size: 23px;
+    line-height: 1.2;
   }
 
   .benefit-card p {
-    font-size: 6px;
+    max-width: 270px;
+    margin-top: 25px;
+    font-size: 17px;
+    line-height: 1.22;
+  }
+
+  .roadmap {
+    padding-top: 126px;
+  }
+
+  .roadmap h2 {
+    font-size: 34px;
+  }
+
+  .roadmap-row,
+  .roadmap-row + .roadmap-row,
+  .roadmap-row-reverse {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 64px;
+    padding: 16px;
+    border: 1px solid #292e42;
+    border-radius: 20px;
+    background: #12141f;
+  }
+
+  .roadmap-row + .roadmap-row {
+    margin-top: 32px;
+  }
+
+  .roadmap-row-reverse .roadmap-copy,
+  .roadmap-row-reverse .roadmap-visual {
+    order: initial;
+  }
+
+  .roadmap-row-reverse {
+    flex-direction: column;
+  }
+
+  .roadmap-row-reverse .roadmap-visual {
+    order: 1;
+  }
+
+  .roadmap-row-reverse .roadmap-copy {
+    order: 2;
+  }
+
+  .roadmap-visual {
+    min-height: 183px;
+    width: 100%;
+    border-radius: 0 16px 16px 0;
+  }
+
+  .visual-right {
+    border-radius: 16px 0 0 16px;
+  }
+
+  .profile-icon {
+    width: 90px;
+    height: 88px;
+  }
+
+  .search-icon {
+    width: 118px;
+    height: 102px;
+  }
+
+  .roadmap-copy h3 {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .roadmap-copy p {
+    max-width: none;
+    margin-top: 12px;
+    color: #d1d6e5;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 140px;
+    margin-top: 126px;
+    padding: 16px;
+    border-radius: 18px;
+    background: #171a29;
+  }
+
+  .footer-bg,
+  .footer .brand-mark,
+  .footer-brand img,
+  .footer h2 {
+    display: none;
+  }
+
+  .footer-brand {
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    padding: 0;
+    background: transparent;
+  }
+
+  .footer-brand::after {
+    content: "SourceMate";
+    color: #f0f0f2;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .footer-nav,
+  .contacts {
+    display: block;
+    color: #ccd1de;
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .footer-nav a {
+    display: none;
+  }
+
+  .footer-nav::after {
+    content: "Навигация: Наш результат · Что будет дальше · Попробовать";
+  }
+
+  .contacts p {
+    display: none;
+  }
+
+  .contacts::after {
+    content: "Контакты: +7 (900) 900 99-99 · sourcemate@mate.com";
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header,
+  .showcase,
+  .benefits,
+  .roadmap,
+  .footer {
+    width: calc(100% - 24px);
+  }
+
+  .site-header {
+    left: 12px;
+    right: 12px;
+  }
+
+  .hero {
+    padding: 0 12px;
+  }
+
+  .hero h1 {
+    width: calc(100% - 24px);
+    font-size: 26px;
+  }
+
+  .hero-cta {
+    min-height: 58px;
+    padding: 18px 26px;
+    font-size: 15px;
+  }
+
+  .showcase h2,
+  .benefits h2 {
+    font-size: 23px;
+  }
+
+  .card-phone {
+    height: 258px;
+  }
+
+  .phone-visual {
+    width: 258px;
+  }
+
+  .launch-card {
+    height: 310px;
+    padding: 18px;
+  }
+
+  .launch-card .chips {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .chip {
+    justify-content: center;
+    min-width: 0;
+    min-height: 38px;
+    padding: 10px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .launch-card h3 {
+    left: 18px;
+    right: 18px;
+    bottom: 22px;
+    font-size: 34px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .feedback-card {
+    min-height: 320px;
+    padding: 14px;
+  }
+
+  .feedback-card .chips {
+    gap: 6px;
+  }
+
+  .feedback-card .chip {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .feedback-card h3 {
+    font-size: clamp(24px, 8.4vw, 30px);
+    line-height: 1.12;
+  }
+
+  .messages {
+    min-height: 124px;
+  }
+
+  .m1 {
+    width: min(100%, 250px);
+    min-height: 56px;
+  }
+
+  .m2 {
+    top: 70px;
+    width: min(100%, 220px);
+  }
+
+  .benefit-card {
+    min-height: 340px;
+    padding: 32px 18px 28px;
+  }
+
+  .benefit-card h3 {
+    font-size: 21px;
+    overflow-wrap: anywhere;
+  }
+
+  .benefit-card p {
+    font-size: 15px;
+  }
+
+  .roadmap h2 {
+    font-size: 30px;
+  }
+
+  .roadmap-row,
+  .roadmap-row + .roadmap-row,
+  .roadmap-row-reverse {
+    padding: 12px;
+  }
+
+  .roadmap-copy h3 {
+    font-size: 23px;
+  }
+
+  .roadmap-copy p {
+    font-size: 14px;
+  }
+
+  .footer {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .launch-card {
+    height: 300px;
+    padding: 14px;
+  }
+
+  .chip {
+    min-height: 34px;
+    padding: 9px 8px;
+    font-size: 11px;
+  }
+
+  .launch-card h3 {
+    left: 14px;
+    right: 14px;
+    font-size: 30px;
+  }
+
+  .feedback-card {
+    min-height: 300px;
+    padding: 12px;
+  }
+
+  .feedback-card .chip {
+    padding: 5px 6px;
+    font-size: 9px;
+  }
+
+  .feedback-card h3 {
+    font-size: 24px;
+  }
+
+  .message {
+    font-size: 12px;
+  }
+
+  .m1::before,
+  .m2::before {
+    font-size: 12px;
+  }
+
+  .messages {
+    min-height: 116px;
+  }
+
+  .m1 {
+    width: min(100%, 230px);
+    min-height: 54px;
+  }
+
+  .m2 {
+    top: 68px;
+    width: min(100%, 210px);
+  }
+
+  .benefit-card h3,
+  .roadmap-copy h3 {
+    font-size: 20px;
+  }
+
+  .benefit-card p,
+  .roadmap-copy p {
+    font-size: 13px;
   }
 }

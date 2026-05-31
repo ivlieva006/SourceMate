@@ -155,13 +155,19 @@ async function writeDb(db) {
 }
 
 function publicUser(user) {
+  const profile = {
+    name: user?.profile?.name || (user?.email ? user.email.split('@')[0] : 'Имя Фамилия'),
+    role: user?.profile?.role || 'Студент · Московский политех',
+    avatarUrl: user?.profile?.avatarUrl || ''
+  };
   return user ? {
     id: user.id,
     email: user.email,
     emailVerified: user.emailVerified !== false,
-    name: user.profile?.name || (user.email ? user.email.split('@')[0] : 'Имя Фамилия'),
-    role: user.profile?.role || 'Студент · Московский политех',
-    avatarUrl: user.profile?.avatarUrl || '',
+    name: profile.name,
+    role: profile.role,
+    avatarUrl: profile.avatarUrl,
+    profile,
     settings: user.settings || {},
     subscription: publicSubscription(user.subscription),
     passwordUpdatedAt: user.passwordUpdatedAt || user.updatedAt || user.createdAt,
@@ -255,7 +261,7 @@ function isProduction() {
 }
 
 function smtpFallback(code, email, purpose, error) {
-  if (isProduction() || process.env.MAIL_DEV_FALLBACK !== 'true') return null;
+  if (isProduction()) return null;
   const reason = error && (error.code || error.message);
   console.log(`[SourceMate] SMTP недоступен (${reason}). Демо-код для ${email}: ${code}`);
   return {
@@ -779,11 +785,14 @@ async function handleApi(req, res) {
     const user = getCurrentUser(db, req);
     if (!user) return sendError(res, 401, 'Войдите в аккаунт');
 
-    const name = cleanText(body.name, 80);
-    const role = cleanText(body.role, 100);
+    const hasName = Object.prototype.hasOwnProperty.call(body, 'name');
+    const hasRole = Object.prototype.hasOwnProperty.call(body, 'role');
+    const hasEmail = Object.prototype.hasOwnProperty.call(body, 'email');
+    const name = cleanText(hasName ? body.name : user.profile?.name, 80);
+    const role = cleanText(hasRole ? body.role : user.profile?.role, 100);
     const email = normalizeEmail(body.email || user.email);
     if (!name) return sendError(res, 400, 'Введите имя профиля');
-    if (!isEmail(email)) return sendError(res, 400, 'Введите корректную почту');
+    if (hasEmail && !isEmail(email)) return sendError(res, 400, 'Введите корректную почту');
     if (email !== user.email && db.users.some(item => item.email === email && item.id !== user.id)) {
       return sendError(res, 409, 'Аккаунт с такой почтой уже существует');
     }

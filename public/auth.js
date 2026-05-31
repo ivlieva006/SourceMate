@@ -511,7 +511,9 @@ document.addEventListener("click", (event) => {
     state.message = "";
     rerender();
     api("/api/auth/login", { email: state.loginEmail, password: state.loginPassword })
-      .then(() => setView("success"))
+      .then(() => {
+        window.location.href = "./cabinet.html";
+      })
       .catch((error) => {
         state.loginError = true;
         state.message = error.message;

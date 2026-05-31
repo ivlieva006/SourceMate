@@ -50,17 +50,39 @@
     return data;
   }
 
-  function applyUser(user) {
+  function formatCountWord(count, forms) {
+    const abs = Math.abs(Number(count) || 0) % 100;
+    const last = abs % 10;
+    if (abs > 10 && abs < 20) return forms[2];
+    if (last > 1 && last < 5) return forms[1];
+    if (last === 1) return forms[0];
+    return forms[2];
+  }
+
+  function applyUser(user, checks = []) {
     if (!overlay || !user) return;
     const name = user.name || (user.email ? user.email.split("@")[0] : "Имя Фамилия");
     const role = user.role || "Студент · Московский политех";
+    const email = user.email || "student@mail.ru";
+    const initials = name
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "SM";
+    const checksCount = Array.isArray(checks) ? checks.length : 0;
+    const checksLabel = `${checksCount} ${formatCountWord(checksCount, ["проверка", "проверки", "проверок"])}`;
     overlay.querySelectorAll("[data-settings-name]").forEach((node) => { node.textContent = name; });
     overlay.querySelectorAll("[data-settings-role]").forEach((node) => { node.textContent = role; });
-    overlay.querySelectorAll("[data-settings-email]").forEach((node) => { node.textContent = user.email || "student@mail.ru"; });
+    overlay.querySelectorAll("[data-settings-email], .account-mobile-email").forEach((node) => { node.textContent = email; });
+    overlay.querySelectorAll("[data-account-plan-chip]").forEach((node) => { node.textContent = user.subscription?.planName || "Free"; });
+    overlay.querySelectorAll("[data-account-checks-chip]").forEach((node) => { node.textContent = checksLabel; });
     overlay.querySelectorAll("[data-settings-password-updated]").forEach((node) => {
       node.textContent = formatPasswordUpdated(user.passwordUpdatedAt);
     });
     overlay.querySelectorAll("[data-account-avatar]").forEach((avatar) => {
+      avatar.dataset.initials = initials;
       if (user.avatarUrl) {
         avatar.style.backgroundImage = `url("${user.avatarUrl}")`;
         avatar.classList.add("has-image");
@@ -87,19 +109,24 @@
   async function loadState() {
     try {
       const data = await requestJson("/api/cabinet/state");
-      applyUser(data.user);
+      applyUser(data.user, data.checks || []);
     } catch {
       // The modal remains usable as a static settings view if the session is not available.
     }
   }
 
   function setTab(tab) {
+    let activeTab = null;
     overlay.querySelectorAll("[data-settings-tab]").forEach((button) => {
       button.classList.toggle("active", button.dataset.settingsTab === tab);
+      if (button.dataset.settingsTab === tab) activeTab = button;
     });
     overlay.querySelectorAll("[data-settings-panel]").forEach((panel) => {
       panel.classList.toggle("active", panel.dataset.settingsPanel === tab);
     });
+    if (activeTab && window.matchMedia("(max-width: 680px)").matches) {
+      activeTab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
   }
 
   function closeSettings() {
@@ -128,6 +155,14 @@
     initialized = true;
 
     overlay.addEventListener("click", async (event) => {
+      const bannerDismiss = event.target.closest(".banner-dismiss");
+      if (bannerDismiss) {
+        event.preventDefault();
+        event.stopPropagation();
+        bannerDismiss.closest(".settings-banner")?.remove();
+        return;
+      }
+
       if (event.target === overlay || event.target.closest("[data-close-settings]")) {
         closeSettings();
         return;
@@ -136,6 +171,15 @@
       const tab = event.target.closest("[data-settings-tab]");
       if (tab) {
         setTab(tab.dataset.settingsTab);
+        return;
+      }
+
+      const passwordEditButton = event.target.closest("[data-account-action='security-password-edit']");
+      if (passwordEditButton) {
+        const card = passwordEditButton.closest(".security-password-card");
+        const editing = !card?.classList.contains("is-mobile-editing");
+        card?.classList.toggle("is-mobile-editing", editing);
+        if (passwordEditButton.firstChild) passwordEditButton.firstChild.textContent = editing ? "Отмена " : "Изменить ";
         return;
       }
 

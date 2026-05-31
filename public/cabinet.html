@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SourceMate — личный кабинет</title>
     <meta name="description" content="Личный кабинет SourceMate.">
-    <link rel="stylesheet" href="./cabinet.css">
+    <link rel="stylesheet" href="./cabinet.css?v=32">
     <link rel="prefetch" href="./report.html">
     <link rel="prefetch" href="./report.js">
     <link rel="prefetch" href="./source.html">
@@ -16,7 +16,7 @@
   <body>
     <main class="cabinet-page is-loading">
       <div class="cabinet-bg bg-left"></div>
-      <div class="cabinet-bg bg-чright"></div>
+      <div class="cabinet-bg bg-right"></div>
       <div class="cabinet-bg bg-bottom"></div>
 
       <div class="cabinet-shell">
@@ -31,13 +31,55 @@
             <a href="./subscription.html">Подписка</a>
           </nav>
 
-          <button class="cabinet-support" type="button">Поддержка</button>
+          <button class="cabinet-support" type="button" data-burger-toggle aria-label="Открыть меню" aria-expanded="false">Поддержка</button>
         </header>
+
+        <aside class="burger-drawer" data-burger-drawer hidden aria-label="Меню кабинета">
+          <button class="burger-profile" type="button" data-open-settings>
+            <span class="burger-avatar" data-burger-avatar data-account-avatar>SM</span>
+            <span class="burger-profile-text">
+              <strong data-burger-name>SourceMate</strong>
+              <small data-burger-plan>Free · новый кабинет</small>
+            </span>
+            <span class="burger-arrow">›</span>
+          </button>
+          <span class="burger-divider" aria-hidden="true"></span>
+          <button class="burger-item is-active" type="button" data-open-settings>
+            <span class="burger-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.75 1.75 0 0 0 .35 1.94l.05.05a2.1 2.1 0 1 1-2.97 2.97l-.05-.05a1.75 1.75 0 0 0-1.94-.35 1.75 1.75 0 0 0-1.06 1.6v.14a2.1 2.1 0 1 1-4.2 0v-.14a1.75 1.75 0 0 0-1.06-1.6 1.75 1.75 0 0 0-1.94.35l-.05.05a2.1 2.1 0 1 1-2.97-2.97l.05-.05A1.75 1.75 0 0 0 4.02 15a1.75 1.75 0 0 0-1.6-1.06h-.14a2.1 2.1 0 1 1 0-4.2h.14a1.75 1.75 0 0 0 1.6-1.06 1.75 1.75 0 0 0-.35-1.94l-.05-.05A2.1 2.1 0 1 1 6.59 3.7l.05.05a1.75 1.75 0 0 0 1.94.35 1.75 1.75 0 0 0 1.06-1.6v-.14a2.1 2.1 0 1 1 4.2 0v.14a1.75 1.75 0 0 0 1.06 1.6 1.75 1.75 0 0 0 1.94-.35l.05-.05a2.1 2.1 0 1 1 2.97 2.97l-.05.05a1.75 1.75 0 0 0-.35 1.94 1.75 1.75 0 0 0 1.6 1.06h.14a2.1 2.1 0 1 1 0 4.2h-.14A1.75 1.75 0 0 0 19.4 15Z"></path>
+              </svg>
+            </span>
+            <span class="burger-copy">
+              <strong>Настройки</strong>
+              <small>Общее, безопасность, уведомления</small>
+            </span>
+            <span class="burger-arrow">›</span>
+          </button>
+          <button class="burger-item" type="button" data-burger-support>
+            <span class="burger-icon">?</span>
+            <span class="burger-copy">
+              <strong>Поддержка</strong>
+              <small>ИИ-агент и помощь по отчётам</small>
+            </span>
+            <span class="burger-arrow">›</span>
+          </button>
+          <a class="burger-item" href="./subscription.html">
+            <span class="burger-icon">★</span>
+            <span class="burger-copy">
+              <strong>Подписка</strong>
+              <small>Free, Student, Pro и Team</small>
+            </span>
+            <span class="burger-arrow">›</span>
+          </a>
+        </aside>
+        <button class="cabinet-support support-launcher" type="button" data-support-launcher hidden>Поддержка</button>
 
         <section class="cabinet-hero" id="overview" data-welcome>
           <div class="hero-content">
-            <h1>Добро пожаловать<br>в SourceMate</h1>
-            <p>Начните с первой проверки или добавьте тему исследования, чтобы SourceMate собрал источники и рекомендации под вашу работу.</p>
+            <h1 data-hero-title>Добро пожаловать<br>в SourceMate</h1>
+            <p data-hero-subtitle>Начните с первой проверки или добавьте тему исследования</p>
             <div class="hero-chips">
               <span class="chip blue">профиль новый</span>
               <span class="chip violet">0 проверок</span>
@@ -53,30 +95,30 @@
         <section class="stats-grid" aria-label="Статистика">
           <article class="stat-card" data-stat-card="originality">
             <strong data-stat-value>0</strong>
-            <span>Средняя уникальность</span>
-            <small data-stat-note>появится после проверок</small>
+            <span>Уникальность</span>
+            <small data-stat-note>после проверки</small>
           </article>
           <article class="stat-card" data-stat-card="sources">
             <strong data-stat-value>0</strong>
-            <span>Новых источников</span>
-            <small data-stat-note>появятся после темы</small>
+            <span>Источники</span>
+            <small data-stat-note>после темы</small>
           </article>
           <article class="stat-card" data-stat-card="checks">
             <strong data-stat-value>0</strong>
-            <span>Проверок за месяц</span>
-            <small data-stat-note>стартовая статистика</small>
+            <span>Проверки</span>
+            <small data-stat-note>за месяц</small>
           </article>
           <article class="stat-card" data-stat-card="projects">
             <strong data-stat-value>Нет</strong>
             <span>Проекта в работе</span>
-            <small class="warning" data-stat-note>добавьте тему</small>
+            <small class="warning" data-stat-note>добавить тему</small>
           </article>
         </section>
 
         <section class="cabinet-main">
           <section class="history-panel" id="checks">
             <h2>История проверок</h2>
-            <p>Последние документы и их результаты</p>
+            <p>Пока пусто. После проверки здесь появятся документы, проценты уникальности и экспорт PDF</p>
 
             <div data-history-content>
               <label class="topic-field">
@@ -94,12 +136,16 @@
                     </svg>
                   </span>
                   <div class="upload-copy">
-                    <h3 data-upload-title>Вы еще ничего не загружали</h3>
-                    <p data-upload-meta>выберите файл с компьютера до 25 МБ</p>
+                    <h3 data-upload-title>Загрузите первую работу</h3>
+                    <p data-upload-meta>DOCX / PDF / TXT до 25 МБ</p>
                   </div>
                   <span class="format-chip">DOCX / PDF / TXT</span>
                   <button class="upload-button" type="button" data-open-upload-widget>Загрузить и проверить</button>
                 </div>
+              </div>
+              <div class="mobile-history-actions">
+                <button class="upload-button mobile-history-upload" type="button" data-open-upload-widget>Загрузить работу</button>
+                <button class="upload-button mobile-history-export" type="button" data-open-export-widget>Экспортировать отчет</button>
               </div>
               <div class="check-result" data-check-result hidden></div>
             </div>
@@ -119,12 +165,14 @@
             <article class="actions-card">
               <h2>Быстрые действия</h2>
               <div class="side-actions">
-                <button class="cabinet-btn primary muted" type="button" data-open-export-widget>Экспорт отчета</button>
-                <button class="cabinet-btn secondary muted" type="button" data-open-settings>Настройки профиля</button>
+                <button class="cabinet-btn primary muted quick-profile-action" type="button" data-open-settings data-settings-target-tab="account">Профиль</button>
+                <a class="cabinet-btn secondary muted quick-tariff-action" href="./subscription.html">Тариф</a>
+                <button class="cabinet-btn secondary muted quick-support-action" type="button" data-burger-support>Поддержка</button>
               </div>
             </article>
 
             <button class="cabinet-btn primary wide" type="button" data-open-upload-widget>Загрузить работу</button>
+            <button class="cabinet-btn secondary wide" type="button" data-open-export-widget>Экспортировать отчет</button>
           </aside>
         </section>
 
@@ -196,29 +244,47 @@
 
               <div class="settings-list general-settings-list">
                 <button class="settings-row general-row" type="button" data-setting-select="appearance" data-setting-value="Системный">
-                  <span>Внешний вид</span>
+                  <span><b>Внешний вид</b><small>Тема интерфейса</small></span>
                   <strong>Системный</strong>
                 </button>
                 <button class="settings-row general-row" type="button" data-setting-select="contrast" data-setting-value="Система">
-                  <span>Контраст</span>
+                  <span><b>Контраст</b><small>Читаемость отчётов</small></span>
                   <strong>Система</strong>
                 </button>
                 <button class="settings-row general-row" type="button" data-setting-select="accentColor" data-setting-value="SourceMate Blue">
-                  <span>Акцентный цвет</span>
-                  <strong>SourceMate Blue</strong>
+                  <span><b>Акцентный цвет</b><small>SourceMate стиль</small></span>
+                  <strong>Blue</strong>
                 </button>
                 <button class="settings-row general-row" type="button" data-setting-select="language" data-setting-value="Автоматически определять">
-                  <span>Язык</span>
-                  <strong>Автоматически определять</strong>
+                  <span><b>Язык</b><small>Русский по умолчанию</small></span>
+                  <strong>Авто</strong>
                 </button>
                 <label class="settings-row settings-row-toggle general-row general-voice-row">
                   <span>
-                    <b>Включить голосовой ввод</b>
-                    <small>Использовать голосовой ввод в поле загрузки и комментариев.</small>
+                    <b>Голосовой ввод</b>
+                    <small>Комментарии к проверке</small>
                   </span>
                   <input type="checkbox" checked data-setting-toggle="voiceInput">
                   <i aria-hidden="true"></i>
                 </label>
+              </div>
+              <div class="settings-quick-list general-quick-list">
+                <button class="settings-quick-row" type="button" data-burger-support>
+                  <span class="settings-quick-icon">?</span>
+                  <span class="settings-quick-copy">
+                    <b>Поддержка</b>
+                    <small>ИИ-агент поможет с отчётом</small>
+                  </span>
+                  <span class="settings-quick-arrow">›</span>
+                </button>
+                <a class="settings-quick-row is-subscription" href="./subscription.html">
+                  <span class="settings-quick-icon">★</span>
+                  <span class="settings-quick-copy">
+                    <b>Подписка</b>
+                    <small>Free, Student, Pro, Team</small>
+                  </span>
+                  <span class="settings-quick-arrow">›</span>
+                </a>
               </div>
             </section>
 
@@ -311,6 +377,15 @@
                     </label>
                   </div>
                 </article>
+
+                <button class="settings-quick-row settings-mobile-support" type="button" data-burger-support>
+                  <span class="settings-quick-icon">?</span>
+                  <span class="settings-quick-copy">
+                    <b>Поддержка</b>
+                    <small>ИИ-агент поможет с уведомлениями</small>
+                  </span>
+                  <span class="settings-quick-arrow">›</span>
+                </button>
               </div>
             </section>
 
@@ -323,6 +398,13 @@
               <div class="security-settings">
                 <article class="settings-card security-card security-password-card">
                   <h3>Смена пароля</h3>
+                  <div class="security-mobile-summary">
+                    <span>
+                      <b>Пароль</b>
+                      <small data-settings-password-updated>Обновлён недавно</small>
+                    </span>
+                    <button type="button" data-account-action="security-password-edit">Изменить <span aria-hidden="true">›</span></button>
+                  </div>
                   <div class="security-password-row">
                     <div class="security-inputs">
                       <label class="security-input">
@@ -374,6 +456,15 @@
                     <button class="settings-ghost security-log-button" type="button" data-account-action="security-log">Посмотреть всё</button>
                   </div>
                 </article>
+
+                <button class="settings-quick-row settings-mobile-support" type="button" data-burger-support>
+                  <span class="settings-quick-icon">?</span>
+                  <span class="settings-quick-copy">
+                    <b>Поддержка</b>
+                    <small>ИИ-агент поможет с безопасностью</small>
+                  </span>
+                  <span class="settings-quick-arrow">›</span>
+                </button>
               </div>
             </section>
 
@@ -391,6 +482,7 @@
                       <div class="account-profile-display" data-profile-display>
                         <h3 data-settings-name>Анатолий Чикинда</h3>
                         <p data-settings-role>Студент · Московский политех</p>
+                        <p class="account-mobile-email">student@mail.ru</p>
                       </div>
                       <div class="account-profile-inline-edit" data-profile-inline-edit hidden>
                         <label>
@@ -401,6 +493,10 @@
                           <span>Роль</span>
                           <input type="text" data-profile-role-input>
                         </label>
+                      </div>
+                      <div class="account-mobile-chips" aria-label="Статус аккаунта">
+                        <span data-account-plan-chip>Free</span>
+                        <span data-account-checks-chip>0 проверок</span>
                       </div>
                       <span class="account-verified">Почта подтверждена</span>
                       <p class="inline-edit-status" data-profile-status hidden></p>
@@ -496,8 +592,8 @@
                   </svg>
                 </span>
                 <div class="upload-copy">
-                  <h3 data-widget-upload-title>Перетащите файл сюда</h3>
-                  <p data-widget-upload-meta>или выберите файл с компьютера до 25 МБ</p>
+                  <h3 data-widget-upload-title>Нажмите, чтобы выбрать файл</h3>
+                  <p data-widget-upload-meta>DOCX / PDF / TXT до 25 МБ</p>
                 </div>
                 <span class="format-chip">DOCX / PDF / TXT</span>
               </div>
@@ -593,7 +689,7 @@
       </div>
     </main>
 
-    <script src="./cabinet.js"></script>
-    <script src="./support.js"></script>
+    <script src="./cabinet.js?v=10"></script>
+    <script src="./support.js?v=2"></script>
   </body>
 </html>

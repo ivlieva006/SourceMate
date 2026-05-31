@@ -5,6 +5,7 @@
   const teamPreview = document.querySelector("[data-team-preview]");
   const teamPlans = document.querySelector("[data-team-plans]");
   const periodToggle = document.querySelector(".period-toggle");
+  const planBanner = document.querySelector("[data-plan-banner]");
   const title = document.querySelector("[data-subscription-title]");
   const subtitle = document.querySelector("[data-subscription-subtitle]");
   const toast = document.querySelector("[data-subscription-toast]");
@@ -15,24 +16,26 @@
     const closeButton = document.querySelector("[data-close-subscription]");
     if (!closeButton) return;
 
-    if (closeButton.parentElement !== document.body) {
-      document.body.append(closeButton);
+    const mobile = window.matchMedia("(max-width: 680px)").matches;
+    if (closeButton.parentElement !== shell) {
+      shell.append(closeButton);
     }
 
-    closeButton.style.setProperty("position", "fixed", "important");
-    closeButton.style.setProperty("top", "126px");
-    closeButton.style.setProperty("right", "24px");
-    closeButton.style.setProperty("z-index", "100");
+    closeButton.style.setProperty("position", "absolute", "important");
+    closeButton.style.setProperty("inset", "auto");
+    closeButton.style.setProperty("top", mobile ? "2px" : "8px");
+    closeButton.style.setProperty("left", mobile ? "calc(50% + 164px)" : "calc(50% + min(43vw, 890px))");
+    closeButton.style.setProperty("right", "auto");
+    closeButton.style.setProperty("z-index", "1000");
     closeButton.style.setProperty("transform", "none");
   }
 
   pinCloseButton();
   window.addEventListener("resize", pinCloseButton);
-  window.addEventListener("scroll", pinCloseButton, { passive: true });
 
   const state = {
     mode: "personal",
-    period: "year",
+    period: "month",
     subscription: {
       planId: "free",
       period: "forever",
@@ -49,7 +52,7 @@
       subtitle: "Новый пользователь",
       prices: { month: ["0 ₽", "навсегда"], year: ["0 ₽", "навсегда"] },
       purpose: "Быстро изучить SourceMate",
-      limit: "1 проект · 1 проверка · до 10 000 знаков",
+      limit: "1 проверка · до 10 000 знаков",
       features: [
         "Базовая уникальность",
         "3 источника совпадений",
@@ -77,7 +80,7 @@
       id: "student",
       name: "Student",
       subtitle: "Основной тариф для учёбы",
-      badge: "Год выгоднее",
+      badge: "Лучший выбор",
       featured: true,
       prices: { month: ["499 ₽", "/ мес"], year: ["2 990 ₽", "/ год"] },
       purpose: "Оптимальный план на семестр",
@@ -98,7 +101,7 @@
       id: "pro",
       name: "Pro",
       subtitle: "Магистры, аспиранты, авторы",
-      prices: { month: ["1 190 ₽", "/ мес"], year: ["6 990 ₽", "/ год"] },
+      prices: { month: ["999 ₽", "/ мес"], year: ["6 990 ₽", "/ год"] },
       purpose: "Для больших работ и версий",
       limit: "60 проверок/мес · до 2 млн знаков",
       features: [
@@ -160,8 +163,9 @@
     if (isCurrentPlan(plan)) return "Текущий план";
     if (plan.id === "free") return "Текущий план";
     if (plan.id === "deadline") return "Купить на 7 дней";
-    const suffix = state.period === "year" ? "на год" : "на месяц";
-    return `Оплатить ${plan.name} ${suffix}`;
+    if (plan.id === "student") return "Перейти на Student";
+    if (plan.id === "pro") return "Выбрать Pro";
+    return `Оплатить ${plan.name}`;
   }
 
   function renderPlans() {
@@ -225,16 +229,41 @@
     if (teamPreview) teamPreview.hidden = teamMode;
     if (teamPlans) teamPlans.hidden = !teamMode;
     if (periodToggle) periodToggle.hidden = teamMode;
-    if (title) title.textContent = teamMode ? "Командный план SourceMate" : "Личный план SourceMate";
+    if (planBanner) {
+      const bannerHeight = planBanner.offsetHeight || 111;
+      planBanner.style.setProperty("--offer-height", `${bannerHeight}px`);
+      window.clearTimeout(planBanner._collapseTimer);
+      window.cancelAnimationFrame(planBanner._collapseFrame || 0);
+      if (teamMode) {
+        planBanner.hidden = false;
+        planBanner.style.animation = "none";
+        planBanner.classList.remove("is-collapsed");
+        void planBanner.offsetHeight;
+        planBanner._collapseFrame = window.requestAnimationFrame(() => {
+          if (state.mode === "team") planBanner.classList.add("is-collapsed");
+        });
+        planBanner._collapseTimer = window.setTimeout(() => {
+          if (state.mode === "team") planBanner.hidden = true;
+        }, 320);
+      } else {
+        planBanner.hidden = false;
+        planBanner.classList.remove("is-collapsed");
+        planBanner.style.animation = "";
+      }
+    }
+    if (title) title.textContent = teamMode ? "Командный план SourceMate" : "Обновите план SourceMate";
     if (subtitle) {
       subtitle.textContent = teamMode
-        ? "Единый кабинет для преподавателей, кафедр, курсов и учебных групп"
-        : "Выберите тариф под дедлайн, семестр или большую исследовательскую работу";
+        ? "Для учебных команд, где нужно проверять много работ, управлять участниками и хранить отчёты централизованно"
+        : "Выберите тариф под дедлайн, семестр или командную работу с академическими проверками";
     }
 
     const requestButtons = document.querySelectorAll("[data-team-request]");
     requestButtons.forEach((button) => {
-      button.textContent = state.subscription.teamRequest ? "Заявка отправлена" : "Запросить командный доступ";
+      const compactLabel = button.closest(".team-hero-card");
+      button.textContent = state.subscription.teamRequest
+        ? "Заявка отправлена"
+        : compactLabel ? "Запросить доступ" : "Запросить командный доступ";
       button.disabled = Boolean(state.subscription.teamRequest);
     });
 

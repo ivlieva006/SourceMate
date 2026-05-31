@@ -231,6 +231,15 @@ function renderReport(check) {
       <article><strong>${risk.grade}</strong><span>Оценка риска</span><small class="${risk.className}">${risk.label}</small></article>
     </section>
 
+    <section class="detail-actions-card" aria-label="Быстрые действия">
+      <h2>Быстрые действия</h2>
+      <div>
+        <a href="./cabinet.html?settings=1">Профиль</a>
+        <button type="button" class="detail-action-support">Поддержка</button>
+        <a href="./subscription.html">Тариф</a>
+      </div>
+    </section>
+
     <section class="detail-main-row">
       <article class="matches-panel">
         <div class="detail-heading">
@@ -378,6 +387,11 @@ document.addEventListener("click", (event) => {
   const recommendationsClose = event.target.closest("[data-close-recommendations]");
   if (recommendationsClose) {
     recommendationsClose.closest(".recommendations-panel")?.remove();
+    return;
+  }
+
+  if (event.target.closest(".detail-action-support")) {
+    document.querySelector(".cabinet-support")?.click();
     return;
   }
 
